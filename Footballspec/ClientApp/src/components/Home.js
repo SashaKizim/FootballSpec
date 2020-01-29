@@ -1,8 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
+import { get_standings, get_matches, get_scorers } from '../store/FootballDataBL'
 const Home = props => (
-  <div>
+  
+    <div>
+        <button className="btn btn-primary" onClick={() => props.get_standings() }>Standings</button>
+        <button className="btn btn-primary" onClick={() => props.get_matches()}>Matches</button>
+        <button className="btn btn-primary" onClick={() => props.get_scorers()}>Scoreres</button>
     <h1>Hello, world!</h1>
     <p>Welcome to your new single-page application, built with:</p>
     <ul>
@@ -20,4 +24,4 @@ const Home = props => (
   </div>
 );
 
-export default connect()(Home);
+export default connect(null, { get_standings, get_matches, get_scorers})(Home);

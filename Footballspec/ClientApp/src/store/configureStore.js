@@ -3,11 +3,16 @@ import thunk from 'redux-thunk';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
 import * as Counter from './Counter';
 import * as WeatherForecasts from './WeatherForecasts';
-
+import * as SerieA from './FotballDataSA';
+import * as EPL from './FootballDataEPL';
+import * as BL from './FootballDataBL'
 export default function configureStore (history, initialState) {
   const reducers = {
     counter: Counter.reducer,
-    weatherForecasts: WeatherForecasts.reducer
+      weatherForecasts: WeatherForecasts.reducer,
+      seriea: SerieA.reducer,
+      epl: EPL.reducer,
+      bl: BL.reducer
   };
 
   const middleware = [
