@@ -18,21 +18,21 @@ export const reducer = (state = initialState, action = {}) => {
     if (action.type === loadSAStandings) {
         return {
             ...state, standings:
-                action.data.standings,
+                Object.values(Object.values(action.data.standings)[0].table),
             currentmatchday: action.data.season.currentMatchday
             };
     }
 
     if (action.type === loadSAMatches) {
         return {
-            ...state, matches:action.data
+            ...state, matches: Object.values(action.data)
                 
             
              };
     }
     if (action.type === loadSAScorers) {
         return {
-            ...state, scorers: action.data
+            ...state, scorers: Object.values(action.data)
         };
     }
 
