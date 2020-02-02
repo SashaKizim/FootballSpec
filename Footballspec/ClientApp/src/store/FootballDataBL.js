@@ -1,85 +1,239 @@
 ﻿import FootballServise from '../servises/FootballServise'
 
 const loadBLStandings = 'LOAD_BL_STANDINGS';
+const succesBLStandings = 'SUCCES_BL_STANDINGS';
+const failedBLStandings = 'FAILED_BL_STANDINGS';
 const loadBLMatches = 'LOAD_BL_MATCHES';
+const succesBLMatches = 'SUCCES_BL_MATCHES';
+const failedBLMatches = 'FAILED_BL_MATCHES';
 const loadBLScorers = 'LOAD_BL_SCORERS';
+const succesBLScorers = 'SUCCES_BL_SCORERS';
+const failedBLScorers = 'FAILED_BL_SCORERS';
 
 
 const initialState = {
 
-    standings: [],
-    scorers: [],
-    matches: [],
+    standings: {
+        data:[],
+        failed: false,
+        loading: false,
+        succes: false
+    },
+    scorers:{
+    data:[],
+    failed: false,
+    loading: false,
+    succes: false
+},
+    matches:{
+        data:[],
+        failed: false,
+        loading: false,
+        succes: false
+    },
     currentmatchday: 1
 }
 export const reducer = (state = initialState, action = {}) => {
 
 
+    if (action.type === succesBLStandings) {
+        return {
+            ...state,standings:{
+                data:
+                Object.values (Object.values(action.data.standings)[0].table),
+            
+            failed:false,
+            loading:false,
+            succes:true
+        },currentmatchday: action.data.season.currentMatchday 
+        };
+        
+    }
     if (action.type === loadBLStandings) {
         return {
-            ...state, standings:
-                Object.values (Object.values(action.data.standings)[0].table),
-            currentmatchday: action.data.season.currentMatchday
+            ...state,standings:{
+               data:state.standings.data,
+            failed:false,
+            loading:true,
+            succes:false
+             }
+        };
+        
+    }
+    if (action.type === failedBLStandings) {
+        return {
+            ...state,standings:{
+               data:state.standings.data,
+            failed:true,
+            loading:false,
+            succes:false
+             }
         };
         
     }
 
+
+    if (action.type === succesBLMatches) {
+        return {
+            ...state,matches:{
+                data:Object.values(action.data),
+             failed:false,
+             loading:false,
+             succes:true
+              }
+            
+        };
+    }
     if (action.type === loadBLMatches) {
         return {
-            ...state, matches: Object.values(action.data)
+            ...state,matches:{
+               data:state.matches.data,
+            failed:false,
+            loading:true,
+            succes:false
+             }
+        };
+        
+    }
+    if (action.type === failedBLMatches) {
+        return {
+            ...state,matches:{
+               data:state.matches.data,
+            failed:true,
+            loading:false,
+            succes:false
+             }
+        };
+        
+    }
+    if (action.type === succesBLScorers) {
+        return {
+            ...state, scorers: {
+                data:Object.values(action.data),
+             failed:false,
+             loading:false,
+             succes:true
+              }
         };
     }
     if (action.type === loadBLScorers) {
         return {
-            ...state, scorers: Object.values (action.data)
+            ...state,scorers:{
+               data:state.scorers.data,
+            failed:false,
+            loading:true,
+            succes:false
+             }
         };
+        
+    }
+    if (action.type === failedBLScorers) {
+        return {
+            ...state,scorers:{
+               data:state.scorers.data,
+            failed:true,
+            loading:false,
+            succes:false
+             }
+        };
+        
     }
 
     return state;
 };
-export function standings(data) {
-    return {
-        type: loadBLStandings,
-        data
-    };
+export const standings ={
+    started: () => {
+        return {
+            type: loadBLStandings,
+            
+        }
+    },
+    success: (data) => {
+        return {
+            type: succesBLStandings,
+            data
+        }
+    },
+    failed: (error) => {
+        return {
+            type: failedBLStandings
+        }
+    }
 }
-export function matches(data) {
-    return {
-        type: loadBLMatches,
-        data
-    };
+export const matches= {
+    started: () => {
+        return {
+            type: loadBLMatches,
+            
+        }
+    },
+    success: (data) => {
+        return {
+            type: succesBLMatches,
+            data
+        }
+    },
+    failed: (error) => {
+        return {
+            type: failedBLMatches
+        }
+    }
 }
-export function scorers(data) {
-    return {
-        type: loadBLScorers,
-        data
-    };
+export const scorers= {
+    started: () => {
+        return {
+            type: loadBLScorers
+            
+        }
+    },
+    success: (data) => {
+        return {
+            type: succesBLScorers,
+            data
+        }
+    },
+    failed: (error) => {
+        return {
+            type: failedBLScorers
+        }
+    }
 }
-export function get_standings() {
-    return dispatch => {
-        FootballServise.getResource('/BL1/standings')
-            .then(res => {
+export const get_standings=()=> {
+    return (dispatch) => {
+        
+            dispatch(standings.started());
 
-                dispatch(standings(res.data))
+            FootballServise.getResource('/BL1/standings')
+            .then(response => {
+                dispatch(standings.success(response.data));
+            })
+            .catch((error) => {
+                dispatch(standings.failed());
             });
     }
 }
-export function get_matches() {
-    return dispatch => {
+export const get_matches=()=> {
+    return (dispatch) => {
+        dispatch(matches.started());
         FootballServise.getResource('/BL1/matches')
             .then(res => {
-
-                dispatch(matches(res.data.matches))
+                dispatch(matches.success(res.data.matches));
+            })  
+            .catch((error) => {
+                dispatch(matches.failed());
             });
 
     }
 }
-export function get_scorers() {
-    return dispatch => {
+export const get_scorers=()=> {
+    return (dispatch) => {
+        dispatch(scorers.started());
         FootballServise.getResource('/BL1/scorers')
             .then(res => {
-
-                dispatch(scorers(res.data.scorers))
+                dispatch(scorers.success(res.data.scorers))
+            })
+            .catch((error) => {
+                dispatch(scorers.failed());
             });
     }
 }
