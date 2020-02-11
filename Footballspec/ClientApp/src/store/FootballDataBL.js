@@ -198,7 +198,7 @@ export const scorers= {
         }
     }
 }
-export const get_standings=()=> {
+export const get_standingsbl=()=> {
     return (dispatch) => {
         
             dispatch(standings.started());
@@ -212,12 +212,13 @@ export const get_standings=()=> {
             });
     }
 }
-export const get_matches=()=> {
+export const get_matchesbl=()=> {
     return (dispatch) => {
         dispatch(matches.started());
         FootballServise.getResource('/BL1/matches')
             .then(res => {
                 dispatch(matches.success(res.data.matches));
+                
             })  
             .catch((error) => {
                 dispatch(matches.failed());
@@ -225,12 +226,13 @@ export const get_matches=()=> {
 
     }
 }
-export const get_scorers=()=> {
+export const get_scorersbl=()=> {
     return (dispatch) => {
         dispatch(scorers.started());
         FootballServise.getResource('/BL1/scorers')
             .then(res => {
-                dispatch(scorers.success(res.data.scorers))
+                dispatch(scorers.success(res.data.scorers));
+            
             })
             .catch((error) => {
                 dispatch(scorers.failed());

@@ -199,7 +199,7 @@ export const scorers= {
         }
     }
 }
-export const get_standings=()=> {
+export const get_standingssa=()=> {
     return (dispatch) => {
         
             dispatch(standings.started());
@@ -213,7 +213,7 @@ export const get_standings=()=> {
             });
     }
 }
-export const get_matches=()=> {
+export const get_matchessa=()=> {
     return (dispatch) => {
         dispatch(matches.started());
         FootballServise.getResource('/SA/matches')
@@ -226,7 +226,7 @@ export const get_matches=()=> {
 
     }
 }
-export const get_scorers=()=> {
+export const get_scorerssa=()=> {
     return (dispatch) => {
         dispatch(scorers.started());
         FootballServise.getResource('/SA/scorers')

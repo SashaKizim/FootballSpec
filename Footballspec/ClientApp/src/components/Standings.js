@@ -1,14 +1,20 @@
-import React, { Component } from 'react';
+import React, { Component,  useState  } from 'react';
 import { connect } from 'react-redux';
-import {Table} from 'reactstrap';
-import { get_standings } from '../store/FootballDataBL'
-
+import {Table,UncontrolledTooltip} from 'reactstrap';
+import { get_standingsbl } from '../store/FootballDataBL'
+import { get_standingssa } from '../store/FotballDataSA'
+import { get_standingsepl } from '../store/FootballDataEPL'
 class Standings extends Component {
     
     
    componentDidMount=()=>{
-      
-       this.props.getStandings();
+    
+    if(this.props.league==='bl')
+       this.props.getStandingsbl();
+     if(this.props.league==='epl')
+       this.props.getStandingsepl();
+     if(this.props.league==='sa')
+       this.props.getStandingssa();
      
    }        
     
@@ -16,8 +22,14 @@ class Standings extends Component {
     
     render() {
         
-        
-        const list = this.props.bl.standings.data.map((item) => {
+        let lg =[];
+        if(this.props.league==='bl')
+        lg=this.props.bl.standings.data;
+         if(this.props.league==='epl')
+        lg=this.props.epl.standings.data;
+         if(this.props.league==='sa')
+        lg=this.props.seriea.standings.data;
+        const list = lg.map((item) => {
             return <tr>
             <td>{item.position}</td>
             {/* <td>{item.team.crestUrl}</td> */}
@@ -32,24 +44,34 @@ class Standings extends Component {
             <td>{item.goalDifference}</td>
           </tr>
          });
+         
         return (
-            
-            
-
-            <Table striped bordered hover>
-  <thead>
+          <Table dark striped hover size="sm">
+   <thead>
     <tr>
-    <th>Position</th>
+    <th></th>
             {/* <th>Logo</th> */}
             <th>Team</th>
-            <th>PlayedGames</th>
+            <th href="#" id="pg" >PG</th>
             <th>won</th>
             <th>draw</th>
             <th>lost</th>
-            <th>points</th>
-            <th>goalsFor</th>
-            <th>goalsAgainst</th>
-            <th>goalDifference</th>
+            <UncontrolledTooltip placement="top" target="pg">
+        PlayedGames
+      </UncontrolledTooltip>
+            <th className="text-danger">points</th>
+            <th href="#" id="gf">gF</th>
+            <th href="#" id="ga">gA</th>
+            <th href="#" id="gd">gD</th>
+            <UncontrolledTooltip placement="top" target="gf">
+        GoalsFor
+      </UncontrolledTooltip>
+      <UncontrolledTooltip placement="top" target="ga">
+        GoalsAgainst
+      </UncontrolledTooltip>
+      <UncontrolledTooltip placement="top" target="gd">
+        GoalsDifference
+      </UncontrolledTooltip>
     </tr>
   </thead>
   
@@ -62,17 +84,24 @@ class Standings extends Component {
         
     }
 }
-const mapStateToProps = ({bl}) => {
+const mapStateToProps = ({bl,seriea,epl}) => {
   
     return {
 
-        bl
+        bl,seriea,epl
     };
+
 }
 const mapDispatch = {
-    getStandings: () => {
-      return get_standings();
-    }
+    getStandingsbl: () => {
+      return get_standingsbl();
+    },
+    getStandingsepl: () => {
+        return get_standingsepl();
+      },
+      getStandingssa: () => {
+        return get_standingssa();
+      }
 }
 
 
