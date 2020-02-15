@@ -8,7 +8,6 @@ namespace FootballSpeci.DAL.Entities
 {
     public class DbUser : IdentityUser<long>
     {
-    
-
+      public virtual ICollection<MatchDayPts> MatchDays { get; set; }
     }
 }

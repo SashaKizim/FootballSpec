@@ -18,7 +18,11 @@ namespace FootballSpeci.DAL.Entities
 
         }
 
-       
+       public DbSet<Liga> Ligas { get; set; }
+        public DbSet<MatchDayPts> MatchDayPts { get; set; }
+        public DbSet<MatchForecast> MatchForecasts { get; set; }
+
+
 
        
     }
