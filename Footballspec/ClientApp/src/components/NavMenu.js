@@ -2,8 +2,9 @@ import React from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
+import { connect } from 'react-redux';
 
-export default class NavMenu extends React.Component {
+ class NavMenu extends React.Component {
   constructor (props) {
     super(props);
 
@@ -16,7 +17,28 @@ export default class NavMenu extends React.Component {
     this.setState({
       isOpen: !this.state.isOpen
     });
-  }
+    }
+
+    isauth() {
+        const isAuth = this.props.isAuthenticated;
+        if (isAuth) {
+            return [(<li className="nav-item" key="logout">
+                <Link className="text-dark nav-link" to="/logout">Logout</Link>
+            </li>),
+            (<li className="nav-item" key="profile">
+                <Link className="text-dark nav-link" to="/profile">Profile</Link>
+            </li>)]
+        }
+        else {
+            return [(<li className="nav-item" key="login">
+                <Link className="text-dark nav-link" to="/login">Login</Link>
+            </li>),
+            (<li className="nav-item" key="register">
+                <Link className="text-dark nav-link" to="/register">Register</Link>
+            </li>)]
+        }
+
+    }
   render () {
     return (
       <header>
@@ -35,6 +57,7 @@ export default class NavMenu extends React.Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
                 </NavItem>
+                {this.isauth()}
               </ul>
             </Collapse>
           </Container>
@@ -43,3 +66,10 @@ export default class NavMenu extends React.Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+    return {
+        isAuthenticated: state.auth.isAuthenticated
+    }
+}
+
+export default connect(mapStateToProps)(NavMenu);

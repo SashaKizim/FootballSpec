@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FootballSpeci.Models
+namespace FootballSpeci.DAL.Entities
 {
-    public class ApplicationUser : IdentityUser
+    public class DbUser : IdentityUser<long>
     {
+    
+
     }
 }

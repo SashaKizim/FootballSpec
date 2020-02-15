@@ -6,13 +6,16 @@ import * as WeatherForecasts from './WeatherForecasts';
 import * as SerieA from './FotballDataSA';
 import * as EPL from './FootballDataEPL';
 import * as BL from './FootballDataBL'
+import * as Auth from './auth'
+
 export default function configureStore (history, initialState) {
   const reducers = {
     counter: Counter.reducer,
       weatherForecasts: WeatherForecasts.reducer,
       seriea: SerieA.reducer,
       epl: EPL.reducer,
-      bl: BL.reducer
+      bl: BL.reducer,
+      auth: Auth.reducer
   };
 
   const middleware = [
